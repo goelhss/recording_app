@@ -11,3 +11,7 @@ recordings/
 
 # Swift Package Manager resolved versions (keep Package.resolved for reproducibility)
 # .build is already excluded above
+
+# Android build output
+RecordApp-Android/app/build/
+RecordApp-Android/.gradle/

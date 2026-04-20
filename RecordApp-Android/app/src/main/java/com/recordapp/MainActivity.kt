@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -46,11 +47,24 @@ class MainActivity : AppCompatActivity() {
 
         noteList.setOnItemClickListener { _, _, pos, _ ->
             val file = NoteStore.allNotes(this).getOrNull(pos) ?: return@setOnItemClickListener
-            val text = file.readText()
+            val text = file.readText().trim().ifEmpty { "(No transcript — recording was audio only or speech was not recognized)" }
+
+            val tv = TextView(this).apply {
+                this.text = text
+                textSize = 14f
+                setPadding(48, 32, 48, 32)
+            }
+            val scroll = ScrollView(this).apply { addView(tv) }
+
             android.app.AlertDialog.Builder(this)
                 .setTitle(file.name)
-                .setMessage(text)
+                .setView(scroll)
                 .setPositiveButton("OK", null)
+                .setNeutralButton("Copy") { _, _ ->
+                    val cm = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                    cm.setPrimaryClip(android.content.ClipData.newPlainText("note", text))
+                    Toast.makeText(this, "Copied", Toast.LENGTH_SHORT).show()
+                }
                 .show()
         }
 
