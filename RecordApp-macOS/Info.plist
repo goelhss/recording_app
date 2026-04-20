@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>RecordApp</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.recordapp.macos</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.1.0</string>
+    <key>CFBundleExecutable</key>
+    <string>RecordApp</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <!-- Run as menu bar app — no Dock icon, no main window -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Privacy usage descriptions (required by macOS) -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>RecordApp needs microphone access to transcribe your spoken notes.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>RecordApp uses speech recognition to convert your voice to text notes.</string>
+
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+</dict>
+</plist>

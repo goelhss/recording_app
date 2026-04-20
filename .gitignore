@@ -1,0 +1,13 @@
+# Build output
+build/
+RecordApp-macOS/.build/
+RecordApp-macOS/.swiftpm/
+
+# Recordings (audio + transcripts — personal data)
+recordings/
+
+# macOS
+.DS_Store
+
+# Swift Package Manager resolved versions (keep Package.resolved for reproducibility)
+# .build is already excluded above
