@@ -60,7 +60,7 @@ class AudioManager: NSObject {
             guard let self else { return }
             if let result {
                 let text = result.bestTranscription.formattedString
-                Logger.shared.log("HEARD: \(text)")
+                if self.isRecording { Logger.shared.log("HEARD: \(text)") }
                 DispatchQueue.main.async { self.onHeard?(text) }
                 self.scanForCommand(in: text)
 
@@ -70,7 +70,10 @@ class AudioManager: NSObject {
                 }
             }
             if let error {
-                Logger.shared.log("CMD ERROR: \(error.localizedDescription)")
+                let msg = error.localizedDescription
+                if !msg.contains("No speech detected") {
+                    Logger.shared.log("CMD ERROR: \(msg)")
+                }
                 if self.isCapturingTranscript { self.flushSessionToFile() }
                 guard !self.isRestartingCommand else { return }
                 self.isRestartingCommand = true
@@ -100,6 +103,7 @@ class AudioManager: NSObject {
                    || lower.contains("he recorder")  || lower.contains("he record")
                    || lower.contains("recorder")
                    || lower.contains("jeanie") || lower.contains("jeannie") || lower.contains("genie")
+                   || lower.contains("ginny") || lower.contains("jenny") || lower.contains("jinny")
                    || lower.contains("rrr")
         DispatchQueue.main.async {
             self.onScanResult?(hasWake ? "WAKE: \(lower.prefix(60))" : "no wake: \(lower.prefix(60))")

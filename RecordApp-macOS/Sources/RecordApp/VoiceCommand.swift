@@ -27,12 +27,13 @@ struct VoiceCommandParser {
                    || t.contains("he recorder")  || t.contains("he record")
                    || t.contains("recorder")
                    || t.contains("jeanie") || t.contains("jeannie") || t.contains("genie")
+                   || t.contains("ginny") || t.contains("jenny") || t.contains("jinny")
                    || t.contains("rrr")
         guard hasWake else { return nil }
 
-        if t.contains("stop") || t.contains("close")        { return .stopRecording }
-        if t.contains("convert")                             { return .convertToText }
-        if t.contains("start")                            { return .startRecording }
+        if t.contains("stop") || t.contains("close")                         { return .stopRecording }
+        if t.contains("convert")                                              { return .convertToText }
+        if t.contains("start") || t.contains("chart") || t.contains("guard") { return .startRecording }
         if t.contains("append")                           { return .appendToLast }
         if t.contains("local storage") || t.contains("local mode") { return .changeToLocal }
         if t.contains("google drive") || t.contains("google dr")   { return .changeToGoogleDrive }
