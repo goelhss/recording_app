@@ -35,11 +35,16 @@
 
 | Phase | Feature | Status |
 |---|---|---|
-| 1 | Project scaffold | Not started |
-| 1 | Foreground service + mic recording | Not started |
-| 1 | Speech-to-text transcription | Not started |
-| 1 | Save to local storage | Not started |
-| 2 | Wake word detection | Not started |
+| 1 | Project scaffold (Kotlin, Gradle, API 34) | ✅ Done |
+| 1 | ForegroundService with mic permission | ✅ Done |
+| 1 | SpeechRecognizer — always-on wake word + live STT | ✅ Done |
+| 1 | Save notes to local storage (external files dir) | ✅ Done |
+| 1 | Voice commands — start/stop/playback/delete/count | ✅ Done |
+| 1 | TTS confirmation (TextToSpeech API) | ✅ Done |
+| 1 | Start on boot (BootReceiver) | ✅ Done |
+| 1 | Build + install scripts | ✅ Done |
+| 2 | Offline Whisper transcription (whisper.cpp NDK) | Not started |
+| 2 | Tagging, search, summarization | Not started |
 | 3 | Google Drive sync | Not started |
 
 ---
@@ -171,7 +176,22 @@ Files use `yyyy-MM-dd_HH-mm-ss` timestamps as names. The `.caf` and `.txt` for t
 - WhisperKit model downloaded once from HuggingFace to `~/.cache/huggingface/` on first transcription
 
 ### Android
-- Not yet started. Planned: Kotlin, `ForegroundService`, `SpeechRecognizer`, whisper.cpp via JNI
+- Min SDK: Android 14 (API 34)
+- Language: Kotlin, build system: Gradle 8.6
+- `ForegroundService` with `foregroundServiceType="microphone"` — required on Android 14 for mic access from background
+- `SpeechRecognizer` for always-on wake word detection and live transcription (same continuous-restart pattern as macOS SFSpeechRecognizer)
+- Notes saved to `getExternalFilesDir(null)/recordings/` — app-specific, no storage permissions needed
+- `TextToSpeech` for TTS command confirmation (equivalent of macOS AVSpeechSynthesizer)
+- `BootReceiver` starts the service automatically after phone reboot
+- Transcription mode: live STT via Google's SpeechRecognizer (online). Offline Whisper via whisper.cpp NDK planned for Phase 2.
+- Notes directory: visible via Android file manager at `Android/data/com.recordapp/files/recordings/`
+
+**Build steps:**
+```
+bash scripts/android/setup.sh   # one-time: checks Java, adb, generates gradlew
+bash scripts/android/build.sh   # builds debug APK
+bash scripts/android/install.sh # installs to connected phone via USB
+```
 
 ---
 
